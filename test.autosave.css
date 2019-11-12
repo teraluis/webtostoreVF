@@ -1,0 +1,35 @@
+.map {height: 40%;}
+
+.fa-search {
+  position: absolute;
+  top: 3.1em;
+  right: 1em;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 15px;
+  border: none;
+}
+.button {
+  background-color: black;
+  color: white;
+  padding : 10px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+/*   position:absolute;
+top:70%;
+left:0%; */
+}
+.button:hover {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #ff5603;
+  -webkit-box-shadow: 0 0 0 1px #ff5603, 0 0 14px #ff5603;
+  box-shadow: 0 0 0 1px #ff5603, 0 0 14px #ff5603;
+}
+.lien {
+  color: blue;
+}
+b {
+  font-size : 1.2em;
+}
