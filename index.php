@@ -168,7 +168,8 @@ $address = getaddress($lat,$long);
 
           <div class="formulaire" >
             <label for="date" class="col-form-label">A quel moment souhaitez-vous passer ?</label>
-            <input type="date" class="form-control" id="date" name="date" min="2019-29-01" max="2019-12-31"  required> 
+            <?php $startDate = time(); ?>
+            <input type="date" class="form-control" id="date" name="date" min="<?= date("Y-m-d",strtotime('+5 day', $startDate)) ?>" max="<?= date("Y-m-d",strtotime('+2 month', $startDate)) ?>"  required> 
           </div>
           <br><br>
           <div class="g-recaptcha" data-sitekey="6LcaWpgUAAAAAFPVrg_NCw52jidXGWLZVlm2A4wJ"></div>

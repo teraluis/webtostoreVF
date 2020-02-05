@@ -1,0 +1,21 @@
+{
+	"name" : "Luis test",
+	"email" : "luistest@gmail.com",
+	"street" : "1 rue jean baptiste charcot",
+	"city" : "Curbevoie",
+	"zipCode" : "9000",
+	"country" : "France",
+	"phoneNumber" : "+30 123456789",
+	"cellular" : "+33 532322114",
+	"dueDate" : "2020-01-10",
+	"items" : [
+		"MOSQUELETTEC4"	
+	],
+	"storeId" : "Angel Eyes",
+	"notes" : "I want a pice of cake !",
+	"storeName" : "mon magasin",
+	"storeCity" : "Paris",
+	"storeStreet" : "rue de champs de elysée",
+	"storeZipCode" : "75008",
+	"storePhone" : "+33 539132319"
+}
