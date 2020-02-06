@@ -25,6 +25,7 @@ if(isset($_POST['g-recaptcha-response'])){
             $postal = trim($_POST['postal']);
             $codigo_postal = trim($_POST['codigo_postal']);
             $phoneOpticien = trim($_POST['phoneOpticien']);
+            $url = "https://europe-west2-angel-eyes-pixel-perfect.cloudfunctions.net/api/bookings/create";
             $data = array(
                 "name" => $nom." ".$prenom ,
                 "email" => $mail ,
@@ -36,15 +37,50 @@ if(isset($_POST['g-recaptcha-response'])){
                 "cellular" => $portable,
                 "dueDate" => date("Y-m-d",strtotime($date)),
                 "items" => array($monture),
-                "storeId" => "C0".$phoneOpticien,
+                "storeId" => "".$phoneOpticien,
                 "notes" => "",
                 "storeName" => $opticien,
                 "storeCity" => $ciudad,
                 "storeStreet" =>$direcion,
-                "storeZipcode" => $codigo_postal,
+                "storeZipCode" => $codigo_postal,
                 "storePhone" => $phoneOpticien
             );
-            
+            $json = json_encode($data);
+            try {
+            $ch = curl_init($url);
+            if($ch ===false){
+                throw new Exception("Erreur lors d appel url".$url, 1);                
+            }
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+            curl_setopt($ch, CURLOPT_HEADER, true);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Content-Length: ' . strlen($json)
+                )
+            );
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+            $reponse = curl_exec($ch);
+
+            if($reponse === false){
+                throw new Exception("Error lors du curl exec".curl_error($ch),curl_errno($ch));
+            }else {
+                header('Content-type: application/json');
+                $reponse = explode(";", $reponse);
+                $reponse_json= str_replace(array("ma=2592000"), "", $reponse[count($reponse)-1]);
+                $reponse_json =trim($reponse_json);
+                echo json_encode(array("envoi" => $data,"reponse" => json_decode($reponse_json) ));   
+            }
+            curl_close($ch);
+            }catch(Exception $e){
+                echo 'Exception reçue : ',  $e->getMessage(), "\n";
+                trigger_error(sprintf("echec Curl  avec l erreur #%d: %s",$e->getCode(),$e->getMessage()),E_USER_ERROR);
+            }       
              // Plusieurs destinataires
              $to  =  $mail; // notez la virgule
 
@@ -74,11 +110,10 @@ if(isset($_POST['g-recaptcha-response'])){
 
              // Envoi
             mail($to, $subject, $message, implode("\r\n", $headers));
-            echo json_encode($data);
         }
     } else {
         $errors = $resp->getErrorCodes();
-        echo json_encode(array("error"=>"ReCaptcha","desc"=>$errors));
+        echo json_encode(array("result"=>"ReCaptchaError","desc"=>$errors));
     }
 }
 function tel($str) {

@@ -346,16 +346,32 @@ document.getElementById('date').setAttribute("min",today);
           success: function (data) {
               $("#chargement").hide();
               var obj=data;
-              console.log(obj);
-              $("#recapitulatif").text("vous serez attendu à "+obj['adresse']+" le "+obj['date']+" chez "+obj['opticien']);
-              let modal = document.getElementById("modal-body");
-              modal.style.display="none";
-              let modal2 = document.getElementById("modal_body2");
-              modal2.style.display="block";
+              let reponse = obj.reponse;
+              if(reponse.result=="success"){
+                $("#recapitulatif").text("vous serez attendu à "+obj.envoi.street+" le "+obj.envoi.dueDate+" chez "+obj.envoi.storeName+" n° réservation :"+reponse.payload.id);
+                let modal = document.getElementById("modal-body");
+                modal.style.display="none";
+                let modal2 = document.getElementById("modal_body2");
+                modal2.style.display="block";                
+              }else if(reponse.result=="ReCaptchaError"){
+                $("#chargement").hide();
+                $("#error").show();
+              }else if(reponse.result=="exception"){
+                $("#erreur_message_final").text(" message : "+reponse.message);
+                console.log(reponse.message);
+                $("#chargement").hide();
+                $("#error").show();
+              }else {           
+                $("#erreur_message_final").text(reponse.result.message);                 
+                $("#chargement").hide();
+                $("#error").show();
+              }
           },
           complete: function (data) {
-            var obj=data;
-            console.log(obj);
+            var object=data;
+/*            for(const property in object){
+              console.log(`${property}: ${object[property]}`);
+            }*/
             $("#chargement").hide();
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -385,7 +401,6 @@ document.getElementById('date').setAttribute("min",today);
       let newsletter = $("#newsletter").val();
       let ville = $("#ville").val();
       let telephone = $("#telephone").val();
-      console.log(grecaptcha.getResponse());
       let recaptcha =grecaptcha.getResponse()!='';
       if(newsletter=="on" && recaptcha==true){
         if(validation_jour(date)==true && validateEmail(mail)==true && validateString(nom)==true 
@@ -553,9 +568,8 @@ $("input[name='nom']").blur(function verifNom(){
         $("#alert_error_nom").text("");
         $("#alert_error_nom").text("le nom ne dois pas être vide");
   }else {
-      if(!validateString($(this).val())){
-          
-          $(this).css("background-color","rgba(215, 44, 44, 0.4)");//rgba(215, 44, 44, 0.4)
+      if(!validateString($(this).val())){          
+          $(this).css("background-color","rgba(215, 44, 44, 0.4)");
           $(this).css("color","white");
           $("#alert_error_nom").show();
           $("#alert_error_nom").text("");
@@ -605,7 +619,7 @@ $("input[name='postal']").blur(function verifPostal(){
   }
 });
 $("input[name='date']").change(function verifdate(){
-  console.log("changement");
+  //console.log("changement");
   if($(this).val().length<4  || !validation_jour($(this).val())){
         $(this).css("background-color","rgba(215, 44, 44, 0.4)");
         $(this).css("color","white");

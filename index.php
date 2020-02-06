@@ -69,8 +69,7 @@ $address = getaddress($lat,$long);
         <div style="text-align: center;">
         <img src="img/livraison_vinyl.jpg" width="150px">
         <br><br>
-        <h4 style="width: 100%;max-width: 100%">NOUS VOUS ENVOYONS LES LUNETTES SANS ENGAGEMENT <br> POUR ESSAYAGE A LA BOUTIQUE DE VOTRE CHOIX</h4>
-    
+        <h4 style="width: 100%;max-width: 100%">NOUS VOUS ENVOYONS LES LUNETTES SANS ENGAGEMENT <br> POUR ESSAYAGE A LA BOUTIQUE DE VOTRE CHOIX</h4>    
         <span class="lien">SÉLECTIONNEZ LA BOUTIQUE DANS LAQUELLE VOUS SOUHAITEZ RÉCUPÉRER LA MONTURE</span>
         </div>
         <form id="form" style="width: 50%;position: relative;">
@@ -102,11 +101,11 @@ $address = getaddress($lat,$long);
           <div class="row">
             <div class="col">
               <label for="nom"  class="col-form-label">Nom</label>
-              <input type="text" class="form-control" name="nom" placeholder="Nom"  required="true">
+              <input type="text" class="form-control" name="nom" placeholder="Nom" value="nom" required="true">
             </div>
             <div class="col">
               <label for="prenom"  class="col-form-label">Prénom</label>
-              <input type="text" class="form-control" name="prenom" placeholder="Prénom"  required>
+              <input type="text" class="form-control" name="prenom" placeholder="Prénom" value="prenom"  required>
             </div>
           </div>
           </div>
@@ -114,7 +113,7 @@ $address = getaddress($lat,$long);
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="ville">Ville</label>
-            <input type="text" class="form-control" id="ville" name="ville" placeholder=""  required>
+            <input type="text" class="form-control" id="ville" name="ville" placeholder="" value="ville" required>
           </div>
           <div class="form-group col-md-4">
             <label for="departement">Département</label>
@@ -141,13 +140,13 @@ $address = getaddress($lat,$long);
           </div>
           <div class="form-group col-md-2">
             <label for="postal">Code Postal</label>
-            <input type="number" class="form-control" id="postal" name="postal" placeholder=""  min="1000" required>
+            <input type="number" class="form-control" id="postal" name="postal" placeholder="" value="10000"  min="1000" required>
           </div>
         </div>
 
           <div class="formulaire" >
             <label for="mail" class="col-form-label">Mail</label>
-            <input type="mail" class="form-control" id="mail" name="mail"  required>
+            <input type="mail" class="form-control" id="mail" name="mail"  value="luis@mail.com"  required>
           </div>
           <div class="formulaire" >
             <label for="telephone" class="col-form-label" >Portable</label>
@@ -190,8 +189,8 @@ $address = getaddress($lat,$long);
       </div>
       <div class="modal-body" id="error" style="text-align: center;padding: 15%;display: none">
         <i class="fas fa-exclamation-triangle fa-10x"></i><br><br>
-        <h4 style="text-transform: uppercase;">Il semblerait qu'il y ai une erreur.  </h4><br>
-        
+        <h4 style="text-transform: uppercase;" id="erreur_message" > Il semblerait qu'il y ai une erreurr.  </h4><br>
+        <div  id="erreur_message_final"></div>
         <p>Pour toute question,
         veuillez nous contacter au +33 (0)1 56 83 03 85
         ou par mail à  <a href="mailto:contact@angeleyes-eyewear.com">contact@angeleyes-eyewear.com</a> </p>
