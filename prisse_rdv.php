@@ -24,34 +24,43 @@ if(isset($_POST['g-recaptcha-response'])){
             $ciudad = trim($_POST['ciudad']);
             $postal = trim($_POST['postal']);
             $codigo_postal = trim($_POST['codigo_postal']);
-            $data = array("nom" => $nom ,"prenom"=>$prenom,"ville" => $ville, "departement" => $departement , "mail" => $mail ,
-                "portable" => $portable,
-                "newsletter" => $newsletter,
-                "date" => $date,
-                "opticien" =>$opticien,
-                "departement"=>$departement,
-                "adresse" =>$direcion,
-                "ciudad" =>$ciudad,
-                "postal"  => $codigo_postal,
-                "monture" => $monture
+            $phoneOpticien = trim($_POST['phoneOpticien']);
+            $data = array(
+                "name" => $nom." ".$prenom ,
+                "email" => $mail ,
+                "street" =>$direcion,
+                "city" => $ville, 
+                "zipCode"  => $codigo_postal,
+                "country" => "France",
+                "phoneNumber" => $portable,
+                "cellular" => $portable,
+                "dueDate" => date("Y-m-d",strtotime($date)),
+                "items" => array($monture),
+                "storeId" => "C0".$phoneOpticien,
+                "notes" => "",
+                "storeName" => $opticien,
+                "storeCity" => $ciudad,
+                "storeStreet" =>$direcion,
+                "storeZipcode" => $codigo_postal,
+                "storePhone" => $phoneOpticien
             );
              // Plusieurs destinataires
-             $to  = $mail; // notez la virgule
+             $to  =  $mail; // notez la virgule
 
              // Sujet
              $subject = 'Réservation monture à confirmer';
 
              // message
              $message = file_get_contents('resa.html');
-             $message = str_replace("#PRENOM#", $data["prenom"], $message);
-             $message = str_replace("#NOM#", $data["nom"], $message);
-             $message = str_replace("#MODELE#", $data["monture"], $message);
-             $message = str_replace("#OPTICIEN#", $data["opticien"], $message);
-             $message = str_replace("#ADRESSE#", $data["adresse"], $message);
-             $message = str_replace("#POSTAL#", $data["postal"], $message);
-             $message = str_replace("#VILLE#", $data["ciudad"], $message);
-             $message = str_replace("#DATE#", $data["date"], $message);
-             $message = str_replace("#TELEPHONE#", $data["portable"], $message);
+             $message = str_replace("#PRENOM#", $prenom, $message);
+             $message = str_replace("#NOM#", $nom, $message);
+             $message = str_replace("#MODELE#", $monture, $message);
+             $message = str_replace("#OPTICIEN#", $opticien, $message);
+             $message = str_replace("#ADRESSE#", $direcion, $message);
+             $message = str_replace("#POSTAL#", $postal, $message);
+             $message = str_replace("#VILLE#", $ville, $message);
+             $message = str_replace("#DATE#", $date, $message);
+             $message = str_replace("#TELEPHONE#", $portable, $message);
              // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
              $headers[] = 'MIME-Version: 1.0';
              $headers[] = 'Content-type: text/html; charset=UTF-8';

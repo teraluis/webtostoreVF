@@ -325,14 +325,12 @@ document.getElementById('date').setAttribute("min",today);
       var champs = {};
       let tmp = user_data[0];
       tmp = escapeHtml(tmp);
-      //console.log(tmp);
       champs['opticien']=tmp;
       var tmp2 = escapeHtml(user_data[1]);
       champs['adresse']=tmp2;
       champs['ville_opticien']=user_data[2];
       champs['phone_opticien']=user_data[3];
       champs['postal_code_opticien']=user_data[4];
-      console.log(champs['postal_code_opticien']);
       var form = fromulaire.serialize();
 
       
@@ -340,7 +338,7 @@ document.getElementById('date').setAttribute("min",today);
           type: "POST",
           dataType: "json",
           url: "prisse_rdv.php",
-          data: form+"&monture="+monture+"&opticien="+champs['opticien']+"&direcion="+champs['adresse']+"&ciudad="+champs['ville_opticien']+"&codigo_postal="+champs['postal_code_opticien'],
+          data: form+"&monture="+monture+"&opticien="+champs['opticien']+"&direcion="+champs['adresse']+"&ciudad="+champs['ville_opticien']+"&codigo_postal="+champs['postal_code_opticien']+"&phoneOpticien="+champs['phone_opticien'],
           reponseType:'html',
           beforeSend: function () {
             $("#chargement").show();
@@ -492,7 +490,7 @@ $("input[name='telephone']").blur(function verifPhone(){
           $(this).css("color","white");
           $("#alert_error_telephone").show();
           $("#alert_error_telephone").text("");
-          $("#alert_error_telephone").text("le numero de telephone doit comencer soit par 33 soit par 01 à 09");
+          $("#alert_error_telephone").text("le numero de telephone doit comencer par des chiffres de 01 à 09");
       }else if(validatePhone($(this).val())){
           $(this).css("background-color","white");
           $(this).css("color","black");

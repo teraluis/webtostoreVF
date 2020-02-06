@@ -69,8 +69,7 @@ $address = getaddress($lat,$long);
         <div style="text-align: center;">
         <img src="img/livraison_vinyl.jpg" width="150px">
         <br><br>
-        <h4 style="width: 100%;max-width: 100%">NOUS VOUS ENVOYONS LES LUNETTES SANS ENGAGEMENT <br> POUR ESSAYAGE A LA BOUTIQUE DE VOTRE CHOIX</h4>
-    
+        <h4 style="width: 100%;max-width: 100%">NOUS VOUS ENVOYONS LES LUNETTES SANS ENGAGEMENT <br> POUR ESSAYAGE A LA BOUTIQUE DE VOTRE CHOIX</h4>    
         <span class="lien">SÉLECTIONNEZ LA BOUTIQUE DANS LAQUELLE VOUS SOUHAITEZ RÉCUPÉRER LA MONTURE</span>
         </div>
         <form id="form" style="width: 50%;position: relative;">
@@ -169,7 +168,7 @@ $address = getaddress($lat,$long);
           <div class="formulaire" >
             <label for="date" class="col-form-label">A quel moment souhaitez-vous passer ?</label>
             <?php $startDate = time(); ?>
-            <input type="date" class="form-control" id="date" name="date" min="<?= date("Y-m-d",strtotime('+5 day', $startDate)) ?>" max="<?= date("Y-m-d",strtotime('+2 day', $startDate)) ?>"  required> 
+            <input type="date" class="form-control" id="date" name="date" min="<?= date("Y-m-d",strtotime('+5 day', $startDate)) ?>" max="<?= date("Y-m-d",strtotime('+2 month', $startDate)) ?>"  required> 
           </div>
           <br><br>
           <div class="g-recaptcha" data-sitekey="6LcaWpgUAAAAAFPVrg_NCw52jidXGWLZVlm2A4wJ"></div>
