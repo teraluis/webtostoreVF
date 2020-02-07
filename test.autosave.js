@@ -286,10 +286,12 @@ map.data.addListener('click', event => {
   }
 
 $(document).ready(function(){
-
+/*
+  cette fonction a pour but de changer la date minimum 
+*/
 //initMap();
 var today = new Date();
-var dd = today.getDate()+4;
+var dd = today.getDate()+6;
 var mm = today.getMonth() + 1; //January is 0!
 
 var yyyy = today.getFullYear();
@@ -362,16 +364,17 @@ document.getElementById('date').setAttribute("min",today);
                 $("#chargement").hide();
                 $("#error").show();
               }else {           
-                $("#erreur_message_final").text(reponse.result.message);                 
+                $("#erreur_message_final").text(reponse.message);                 
                 $("#chargement").hide();
                 $("#error").show();
               }
           },
           complete: function (data) {
             var object=data;
-/*            for(const property in object){
+            console.log(data);
+            for(const property in object){
               console.log(`${property}: ${object[property]}`);
-            }*/
+            }
             $("#chargement").hide();
           },
           error: function (jqXHR, textStatus, errorThrown) {

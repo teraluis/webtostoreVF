@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+header('Content-type: application/json');
 require('recaptcha/autoload.php');
 
 $secret='6LcaWpgUAAAAAHwcYtFilfbsrUGnJWhs857SHs5-';
@@ -44,7 +44,27 @@ if(isset($_POST['g-recaptcha-response'])){
                 "storeStreet" =>$direcion,
                 "storeZipCode" => $codigo_postal,
                 "storePhone" => $phoneOpticien
-            );
+            );            
+            
+/*            $data = array(
+                "name" => "caroline",
+                "email" => "caroline@gmail.com",
+                "street" => "1 rue cithulu ",
+                "city" => "disneyland",
+                "zipCode" => "666",
+                "country" => "France",
+                "phoneNumber" => "+30 183456789",
+                "cellular" => "+33 532859534556",
+                "dueDate" => "2020-01-10",
+                "items" =>array("MOSQUELETEC4"),
+                "storeId" =>"C09468232223",
+                "notes" => "I want a pice oeef cake !",
+                "storeName" => "mon magasin2",
+                "storeCity" => "Paris",
+                "storeStreet" => "rue machin",
+                "storeZipCode" => "75088908",
+                "storePhone" => "+33 539789132319"
+            );*/
             $json = json_encode($data);
             try {
             $ch = curl_init($url);
@@ -68,51 +88,47 @@ if(isset($_POST['g-recaptcha-response'])){
             $reponse = curl_exec($ch);
 
             if($reponse === false){
-                throw new Exception("Error lors du curl exec".curl_error($ch),curl_errno($ch));
+                //throw new Exception("Error lors du curl exec".curl_error($ch),curl_errno($ch));
+                echo json_encode(array("envoi" => $data,array("reponse" =>"echec","message" => curl_error($ch)." ".curl_errno($ch) ) )); 
             }else {
-                header('Content-type: application/json');
+                
                 $reponse = explode(";", $reponse);
                 $reponse_json= str_replace(array("ma=2592000"), "", $reponse[count($reponse)-1]);
                 $reponse_json =trim($reponse_json);
-                echo json_encode(array("envoi" => $data,"reponse" => json_decode($reponse_json) ));   
-            }
+                $reponse_json = json_decode($reponse_json);
+                if( $reponse_json->result=="success" ){
+                     $to  =  $mail; 
+                     $subject = 'Réservation monture à confirmer';
+                     $message = file_get_contents('resa.html');
+                     $message = str_replace("#PRENOM#", $prenom, $message);
+                     $message = str_replace("#NOM#", $nom, $message);
+                     $message = str_replace("#MODELE#", $monture, $message);
+                     $message = str_replace("#OPTICIEN#", $opticien, $message);
+                     $message = str_replace("#ADRESSE#", $direcion, $message);
+                     $message = str_replace("#POSTAL#", $postal, $message);
+                     $message = str_replace("#VILLE#", $ville, $message);
+                     $message = str_replace("#DATE#", $date, $message);
+                     $message = str_replace("#TELEPHONE#", $portable, $message);
+                     $message = str_replace("#NUMERORESERVATION#", $reponse_json->payload->id, $message);
+                     $headers[] = 'MIME-Version: 1.0';
+                     $headers[] = 'Content-type: text/html; charset=UTF-8';
+                     $headers[] = 'From: vinylfactory <vinylfactory@vinylfactory.com>';
+                     //mail($to, $subject, $message, implode("\r\n", $headers));
+                }
+                echo json_encode(array("envoi" => $data,"reponse" =>$reponse_json )); 
+            }                         
             curl_close($ch);
             }catch(Exception $e){
-                echo 'Exception reçue : ',  $e->getMessage(), "\n";
-                trigger_error(sprintf("echec Curl  avec l erreur #%d: %s",$e->getCode(),$e->getMessage()),E_USER_ERROR);
+                //echo 'Exception reçue : ',  $e->getMessage(), "\n";
+                //trigger_error(sprintf("echec Curl  avec l erreur #%d: %s",$e->getCode(),$e->getMessage()),E_USER_ERROR);
+                
+                echo json_encode(array("envoi" => $data,"reponse" =>$reponse_json ));                   
             }       
-             // Plusieurs destinataires
-             $to  =  $mail; // notez la virgule
 
-             // Sujet
-             $subject = 'Réservation monture à confirmer';
-
-             // message
-             $message = file_get_contents('resa.html');
-             $message = str_replace("#PRENOM#", $prenom, $message);
-             $message = str_replace("#NOM#", $nom, $message);
-             $message = str_replace("#MODELE#", $monture, $message);
-             $message = str_replace("#OPTICIEN#", $opticien, $message);
-             $message = str_replace("#ADRESSE#", $direcion, $message);
-             $message = str_replace("#POSTAL#", $postal, $message);
-             $message = str_replace("#VILLE#", $ville, $message);
-             $message = str_replace("#DATE#", $date, $message);
-             $message = str_replace("#TELEPHONE#", $portable, $message);
-             // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-             $headers[] = 'MIME-Version: 1.0';
-             $headers[] = 'Content-type: text/html; charset=UTF-8';
-
-             // En-têtes additionnels
-             //$headers[] = 'To: MR <mr@example.com>, Mr <mr@example.com>';
-             $headers[] = 'From: vinylfactory <vinylfactory@vinylfactory.com>';
-             //$headers[] = 'Cc: vinylfactory@vinylfactory.com';
-             //$headers[] = 'Bcc: vinylfactory@vinylfactory.com';
-
-             // Envoi
-            mail($to, $subject, $message, implode("\r\n", $headers));
         }
     } else {
         $errors = $resp->getErrorCodes();
+     
         echo json_encode(array("result"=>"ReCaptchaError","desc"=>$errors));
     }
 }

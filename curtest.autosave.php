@@ -47,12 +47,17 @@ $reponse = curl_exec($ch);
 if($reponse === false){
 	throw new Exception("Error lors du curl exec".curl_error($ch),curl_errno($ch));
 }else {
-	header('Content-type: application/json');
+	//header('Content-type: application/json');
 	$reponse = explode(";", $reponse);
-	var_dump($reponse);die();
 	$reponse_json= str_replace(array("ma=2592000"), "", $reponse[count($reponse)-1]);
 	$reponse_json =trim($reponse_json);
-	echo json_encode(array("envoi" => $params,"reponse" => json_decode($reponse_json) ));	
+	$reponse_json =json_decode($reponse_json);
+	
+	if( $reponse_json->result=="success"){
+		echo json_encode(array("envoi" => $params,"reponse" => json_decode($reponse_json) ));
+	}else {
+		echo json_encode(array("envoi" => $params ));
+	}	
 }
 curl_close($ch);
 }catch(Exception $e){

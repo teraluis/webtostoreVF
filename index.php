@@ -101,11 +101,11 @@ $address = getaddress($lat,$long);
           <div class="row">
             <div class="col">
               <label for="nom"  class="col-form-label">Nom</label>
-              <input type="text" class="form-control" name="nom" placeholder="Nom" value="nom" required="true">
+              <input type="text" class="form-control" name="nom" placeholder="Nom" value="" required="true">
             </div>
             <div class="col">
               <label for="prenom"  class="col-form-label">Prénom</label>
-              <input type="text" class="form-control" name="prenom" placeholder="Prénom" value="prenom"  required>
+              <input type="text" class="form-control" name="prenom" placeholder="Prénom" value=""  required>
             </div>
           </div>
           </div>
@@ -113,7 +113,7 @@ $address = getaddress($lat,$long);
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="ville">Ville</label>
-            <input type="text" class="form-control" id="ville" name="ville" placeholder="" value="ville" required>
+            <input type="text" class="form-control" id="ville" name="ville" placeholder="" value="" required>
           </div>
           <div class="form-group col-md-4">
             <label for="departement">Département</label>
@@ -140,13 +140,13 @@ $address = getaddress($lat,$long);
           </div>
           <div class="form-group col-md-2">
             <label for="postal">Code Postal</label>
-            <input type="number" class="form-control" id="postal" name="postal" placeholder="" value="10000"  min="1000" required>
+            <input type="number" class="form-control" id="postal" name="postal" placeholder="" value="7500"  min="1000" required>
           </div>
         </div>
 
           <div class="formulaire" >
             <label for="mail" class="col-form-label">Mail</label>
-            <input type="mail" class="form-control" id="mail" name="mail"  value="luis@mail.com"  required>
+            <input type="mail" class="form-control" id="mail" name="mail"  value=""  required>
           </div>
           <div class="formulaire" >
             <label for="telephone" class="col-form-label" >Portable</label>
@@ -167,8 +167,9 @@ $address = getaddress($lat,$long);
 
           <div class="formulaire" >
             <label for="date" class="col-form-label">A quel moment souhaitez-vous passer ?</label>
-            <?php $startDate = time(); ?>
-            <input type="date" class="form-control" id="date" name="date" min="<?= date("Y-m-d",strtotime('+5 day', $startDate)) ?>" max="<?= date("Y-m-d",strtotime('+2 month', $startDate)) ?>"  required> 
+            <?php $startDate = time();  $dateMin=date("Y-m-d",strtotime('next Thursday', $startDate)); ?>
+            <input type="date" class="form-control" id="date" name="date" min="<?= trim(date("Y-m-d",strtotime('+5 day', $startDate))) ?>" 
+            max="<?= date("Y-m-d",strtotime('+1 Month', $startDate)) ?>" value="<?= $dateMin; ?>"  required> 
           </div>
           <br><br>
           <div class="g-recaptcha" data-sitekey="6LcaWpgUAAAAAFPVrg_NCw52jidXGWLZVlm2A4wJ"></div>
